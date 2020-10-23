@@ -57,7 +57,7 @@ lotus fetch-params 32GiB
 ```
 # 确定版本
 lotus -v
-lotus version 0.10.0+6block+git.f8ce5ae2.1602498082
+lotus version 1.1.0+6block+git.888b0101.1603346418
 
 # 启动lotus
 nohup lotus daemon > ~/lotus.log 2>&1 &
@@ -82,7 +82,7 @@ lotus wallet balance
 # 使用address注册矿工
 lotus-miner init --owner=xxx --sector-size=32GiB
 
-# 如果miner和worker不在一台机器，需要在LOTUS_STORAGE_PATH中配置miner的IP
+# 如果miner和worker不在一台机器，需要在LOTUS_MINER_PATH中配置miner的IP
 # 取消ListenAddress和RemoteListenAddress前面的注释，并将它们的IP改成局域网IP
 vi ~/.lotusminer/config.toml
 
@@ -101,7 +101,7 @@ lotus-miner info
 
 启动worker。
 ```
-# 如果miner和worker不在一台机器，需要将miner机器LOTUS_STORAGE_PATH下的api和token两个文件拷贝到worker机器的LOTUS_STORAGE_PATH下
+# 如果miner和worker不在一台机器，需要将miner机器LOTUS_MINER_PATH下的api和token两个文件拷贝到worker机器的LOTUS_MINER_PATH下
 
 # 可选的环境变量
 # 以下设置会让PreCommit1使用更多的内存并且计算更快，在推荐的硬件配置上建议使用
@@ -131,7 +131,7 @@ lotus-worker run --address xxx.xxx.xxx.xxx:3456 --attach /path/to/another/ssd/di
 vi ~/.lotusminer/config.toml
 
 # 在推荐的硬件配置上，推荐的总并发数是6。
-# 如果在miner上设置ParallelSealLimit为p，在worker上attach了n个封装路径，由于worker启动就带一个WORKER_PATH作为封装路径，所以该worker的总并发数为 p * ( n + 1 )。
+# 如果在miner上设置ParallelSealLimit为p，在worker上attach了n个封装路径，由于worker启动就带一个LOTUS_WORKER_PATH作为封装路径，所以该worker的总并发数为 p * ( n + 1 )。
 # 设置并发数时需要考虑封装路径所在SSD的大小，因为每个sector会消耗520GB的空间，所以每个封装路径所在SSD的大小应不小于 520GB * p。
 ```
 
@@ -188,7 +188,7 @@ $ wget https://very-temporary-spacerace-chain-snapshot.s3.amazonaws.com/Spacerac
 
 进阶：余额不足情况下不再自动添加新的封装任务（已经开始封装的会继续完成）
 ```
-# 设置余额不足10 FIL情况下不再自动添加新的封装任务（默认 100 FIL）
+# 设置余额不足10 FIL情况下不再自动添加新的封装任务（默认 10000 FIL）
 lotus-miner run --min-worker-balance-for-auto-pledge 10
 ```
 
